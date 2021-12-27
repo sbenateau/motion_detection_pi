@@ -42,6 +42,11 @@ while True:
     if i==0: #When output from motion sensor is LOW
         movement = False
     else:
+        if movement == False:
+            motion_start_time = time.time()
+            print(motion_start_time)
+            print(motion_start_time + 2)
+
         movement = True
         record_file = True
 
@@ -64,6 +69,7 @@ while True:
         camera.stop_recording()
         if record_file:
             print "rename"
+            # change to move
             os.rename('records/recorded' + str(file_number) + '.h264', 'records/movement_' + str(file_number) + '.h264')
             list_recorded_file.append(file_number)
             record_file = False

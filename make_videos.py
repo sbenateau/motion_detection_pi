@@ -28,11 +28,13 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(11, GPIO.IN)         #Read output from PIR motion sensor
 
-start_cam = True
-file_number = 0
-timer = video_duration
-list_recorded_file = []
-record_file = False
+start_cam = True           # start the camera
+file_number = 0            # number of file produced (buffer)
+movement_number = 0        # number of movement detected
+timer = video_duration     # duration of buffer videos
+list_recorded_file = []    # list of the file recorded
+record_file = False        # variable to record files when needed
+
 
 while True:
     time.sleep(0.1)
@@ -44,8 +46,11 @@ while True:
     else:
         if movement == False:
             motion_start_time = time.time()
-            print(motion_start_time)
-            print(motion_start_time + 2)
+            print('Movement detected at' + str(motion_start_time))
+            if file_start_time - motion_start_time < 2:
+                print('save 2 files')
+            else:
+                print('save 1 file')
 
         movement = True
         record_file = True
@@ -55,7 +60,8 @@ while True:
         file_number += 1
         print "start_cam " + str(file_number)
         camera.start_recording('records/recorded' + str(file_number) + '.h264')
-        start_time = time.time()
+        file_start_time = time.time()
+        file_start = file_start_time
         start_cam = False
     elif timer > 0:
         current_time = time.time()

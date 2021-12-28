@@ -1,17 +1,20 @@
 # video packages
 import picamera
+
+# general packages
 import socket
 import uuid
 import os
 from datetime import datetime as dt
+import time
+import shutil
 
 # detection packages
 import RPi.GPIO as GPIO
-import time
+
 
 # video setup
 qual=22 # level of image quality between 1 (highest quality, largest size) and 40 (lowest quality, sm$
-video_duration = 6 # video buffer duration in seconds
 UID = uuid.uuid4().hex[:4].upper()+'_'+dt.now().strftime('%Y-%m-%d_%H-%M') # generate random unique I$
 HostName=socket.gethostname()
 
@@ -28,17 +31,18 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(11, GPIO.IN)         #Read output from PIR motion sensor
 
+# general settings
 start_cam = True           # start the camera
 file_number = 0            # number of file produced (buffer)
 movement_number = 0        # number of movement detected
-timer = video_duration     # duration of buffer videos
+video_duration = 6         # duration of buffer videos in seconds
+timer = video_duration
 list_recorded_file = []    # list of the file recorded
 record_file = False        # variable to record files when needed
+time_before_movement = 1   # seconds recorded before movement detection
 
 
 while True:
-    time.sleep(0.1)
-
     # detect movement
     i=GPIO.input(11)
     if i==0: #When output from motion sensor is LOW
@@ -46,11 +50,22 @@ while True:
     else:
         if movement == False:
             motion_start_time = time.time()
-            print('Movement detected at' + str(motion_start_time))
-            if file_start_time - motion_start_time < 2:
+            movement_number += 1
+            print('Movement detected at ' + str(motion_start_time))
+            print('Last file recording at ' + str(file_start_time))
+
+
+            if motion_start_time - file_start_time  < time_before_movement:
                 print('save 2 files')
+                save_multiple_files = True
+                # much more complex compare to length of previous file
+                time_to_cut = round(motion_start_time - file_start_time - time_before_movement, 2)
+                print('Movement starts' + str(time_to_cut) + ' seconds before the end of the other file')
             else:
+                save_multiple_files = False
                 print('save 1 file')
+                time_to_cut = round(motion_start_time - file_start_time - time_before_movement, 2)
+                print('Movement starts at' + str(time_to_cut) + ' seconds in the file')
 
         movement = True
         record_file = True
@@ -74,12 +89,15 @@ while True:
         print "write file"
         camera.stop_recording()
         if record_file:
-            print "rename"
+            print "copy movement file"
             # change to move
-            os.rename('records/recorded' + str(file_number) + '.h264', 'records/movement_' + str(file_number) + '.h264')
+            file_to_copy = 'records/recorded' + str(file_number) + '.h264'
+            copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_ ' + str(time_to_cut) + '.h264'
+            shutil.copyfile(file_to_copy, copied_file)
             list_recorded_file.append(file_number)
             record_file = False
             print list_recorded_file
+            print 'file ' + copied_file + 'recorded'
         if file_number - 1 > 0 and file_number - 1 not in list_recorded_file:
             os.remove('records/recorded' + str(file_number - 1) + '.h264')
     # else:

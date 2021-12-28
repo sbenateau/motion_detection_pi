@@ -1,0 +1,5 @@
+for f in *.h264; do
+    if [ -f "$f" ] && [ "$f" != "convert" ]; then
+        ffmpeg -framerate 15 -i "$f" -c copy "$f.mp4"
+    fi
+done

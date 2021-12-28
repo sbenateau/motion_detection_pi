@@ -45,7 +45,7 @@ time_before_movement = 2.5   # seconds recorded before movement detection
 
 # remove previous files
 # check if there are files
-filenames = next(walk('records'), (None, None, []))[2]  # [] if no file
+filenames = next(os.walk('records'), (None, None, []))[2]  # [] if no file
 print filenames
 if len(filenames) > 0:
     delete_files = input("Voulez-vous supprimer les fichiers existants ? (Y/N)")

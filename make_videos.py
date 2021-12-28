@@ -50,9 +50,11 @@ filenames_saved = next(os.walk('records/saved'), (None, None, []))[2]  # [] if n
 # ask and delete
 if len(filenames_records) > 0 or len(filenames_saved) > 0:
     delete_files = input("Voulez-vous supprimer les fichiers existants ? (Y/N)")
+    delete_files = str(delete_files)
     if delete_files == "Y":
-        os.remove('records/' + filenames_records)
-        os.remove('records/saved' + filenames_saved)
+        print [s + 'records/ for s in filenames_records]
+        # os.remove('records/' + filenames_records)
+        # os.remove('records/saved' + filenames_saved)
 
 
 while True:

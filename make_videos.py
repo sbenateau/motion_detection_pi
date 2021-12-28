@@ -65,7 +65,7 @@ while True:
                 save_multiple_files = False
                 print('save 1 file')
                 time_to_cut = round(motion_start_time - file_start_time - time_before_movement, 2)
-                print('Movement starts at' + str(time_to_cut) + ' seconds in the file')
+                print('Movement starts at ' + str(time_to_cut) + ' seconds in the file')
 
         movement = True
         record_file = True
@@ -92,12 +92,20 @@ while True:
             print "copy movement file"
             # change to move
             file_to_copy = 'records/recorded' + str(file_number) + '.h264'
-            copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_ ' + str(time_to_cut) + '.h264'
+            if save_multiple_files:
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_nocut' + '.h264'
+            else:
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_ ' + str(time_to_cut) + '.h264'
             shutil.copyfile(file_to_copy, copied_file)
             list_recorded_file.append(file_number)
             record_file = False
-            print list_recorded_file
-            print 'file ' + copied_file + 'recorded'
+            if save_multiple_files:
+                file_to_copy = 'records/recorded' + str(file_number) + '.h264'
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number - 1) + '_cut_ ' + str(time_to_cut) + '.h264'
+                shutil.copyfile(file_to_copy, copied_file)
+                list_recorded_file.append(file_number)
+
+            print 'file ' + copied_file + ' recorded'
         if file_number - 1 > 0 and file_number - 1 not in list_recorded_file:
             os.remove('records/recorded' + str(file_number - 1) + '.h264')
     # else:

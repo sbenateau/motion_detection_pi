@@ -73,7 +73,7 @@ while True:
             print('Last file recording at ' + time.ctime(file_start_time))
             print('time difference = ' + str(file_start_time - motion_start_time))
 
-            if file_start_time - motion_start_time < time_before_movement:
+            if motion_start_time - file_start_time < time_before_movement:
                 print('save 2 files')
                 save_multiple_files = True
                 # much more complex compare to length of previous file

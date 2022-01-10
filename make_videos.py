@@ -42,6 +42,7 @@ timer = video_duration
 list_recorded_file = []    # list of the file recorded
 record_file = False        # variable to record files when needed
 time_before_movement = 2.5   # seconds recorded before movement detection
+file_start_time = 0
 
 
 # remove previous files
@@ -76,12 +77,12 @@ while True:
                 print('save 2 files')
                 save_multiple_files = True
                 # much more complex compare to length of previous file
-                time_to_cut = round(motion_start_time - file_start_time - time_before_movement, 2)
+                time_to_cut = round(file_start_time - previous_file_start_time - (time_before_movement - (motion_start_time - file_start_time)), 2)
                 print('Movement starts' + str(time_to_cut) + ' seconds before the end of the other file')
             else:
                 save_multiple_files = False
                 print('save 1 file')
-                time_to_cut = round(motion_start_time - file_start_time - time_before_movement, 2)
+                time_to_cut = round(time_before_movement - (motion_start_time - file_start_time), 2)
                 print('Movement starts at ' + str(time_to_cut) + ' seconds in the file')
 
         movement = True
@@ -91,6 +92,7 @@ while True:
     if start_cam:
         file_number += 1
         camera.start_recording('records/recorded' + str(file_number) + '.h264')
+        previous_file_start_time = file_start_time
         file_start_time = time.time()
         print 'start_cam ' + str(file_number) + ' at ' + str(file_start_time)
         start_time = file_start_time

@@ -119,7 +119,7 @@ while True:
             list_recorded_file.append(file_number)
             record_file = False
             if save_multiple_files:
-                file_to_copy = 'records/recorded' + str(file_number) + '.h264'
+                file_to_copy = 'records/recorded' + str(file_number - 1) + '.h264'
                 copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number - 1) + '_cut_' + str(time_to_cut) + '.h264'
                 shutil.copyfile(file_to_copy, copied_file)
                 list_recorded_file.append(file_number)

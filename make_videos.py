@@ -50,13 +50,13 @@ filenames_records = next(os.walk('records'), (None, None, []))[2]  # [] if no fi
 filenames_saved = next(os.walk('records/saved'), (None, None, []))[2]  # [] if no file
 # ask and delete
 if len(filenames_records) > 0 or len(filenames_saved) > 0:
-#    delete_files = input("Voulez-vous supprimer les fichiers existants ? (Y/N)")
+#    delete_files = input('Voulez-vous supprimer les fichiers existants ? (Y/N)')
 #    delete_files = str(delete_files)
-    delete_files = "Y"
-    if delete_files == "Y":
-        for p in Path("records/").glob("*.h264"):
+    delete_files = 'Y'
+    if delete_files == 'Y':
+        for p in Path('records/').glob('*.h264'):
             p.unlink()
-        for p in Path("records/saved/").glob("*.h264"):
+        for p in Path('records/saved/').glob('*.h264'):
             p.unlink()
 
 while True:
@@ -65,14 +65,14 @@ while True:
     if i==0: #When output from motion sensor is LOW
         movement = False
     else:
-        if movement == False:
+        if movement == False: # first movement detection
             motion_start_time = time.time()
             movement_number += 1
             print('Movement detected at ' + str(motion_start_time))
             print('Last file recording at ' + str(file_start_time))
+            print('time difference = ' + str(file_start_time - motion_start_time))
 
-
-            if motion_start_time - file_start_time  < time_before_movement:
+            if file_start_time - motion_start_time < time_before_movement:
                 print('save 2 files')
                 save_multiple_files = True
                 # much more complex compare to length of previous file
@@ -90,9 +90,9 @@ while True:
     # buffer control
     if start_cam:
         file_number += 1
-        print "start_cam " + str(file_number)
         camera.start_recording('records/recorded' + str(file_number) + '.h264')
         file_start_time = time.time()
+        print 'start_cam ' + str(file_number) + ' at ' + str(file_start_time)
         start_time = file_start_time
         start_cam = False
     elif timer > 0:
@@ -103,10 +103,10 @@ while True:
     elif not movement:
         start_cam = True
         timer = video_duration
-        print "write file"
+        print 'write file'
         camera.stop_recording()
         if record_file:
-            print "copy movement file"
+            print 'copy movement file'
             # change to move
             file_to_copy = 'records/recorded' + str(file_number) + '.h264'
             if save_multiple_files:
@@ -126,4 +126,4 @@ while True:
         if file_number - 1 > 0 and file_number - 1 not in list_recorded_file:
              os.remove('records/recorded' + str(file_number - 1) + '.h264')
     # else:
-       #  print "go on because movement"
+       #  print 'go on because movement'

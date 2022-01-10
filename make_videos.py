@@ -41,7 +41,7 @@ video_duration = 6         # duration of buffer videos in seconds
 timer = video_duration
 list_recorded_file = []    # list of the file recorded
 record_file = False        # variable to record files when needed
-time_before_movement = 2.5   # seconds recorded before movement detection
+time_before_movement = 2   # seconds recorded before movement detection
 file_start_time = 0
 
 

@@ -68,8 +68,8 @@ while True:
         if movement == False: # first movement detection
             motion_start_time = time.time()
             movement_number += 1
-            print('Movement detected at ' + str(motion_start_time))
-            print('Last file recording at ' + str(file_start_time))
+            print('Movement detected at ' + str(time.ctime(motion_start_time)))
+            print('Last file recording at ' + str(time.ctime(file_start_time)))
             print('time difference = ' + str(file_start_time - motion_start_time))
 
             if file_start_time - motion_start_time < time_before_movement:

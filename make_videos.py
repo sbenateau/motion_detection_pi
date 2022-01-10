@@ -4,10 +4,11 @@ import picamera
 # general packages
 import socket
 import uuid
-import os
+import glob, os
 from datetime import datetime as dt
 import time
 import shutil
+from pathlib import Path
 
 # detection packages
 import RPi.GPIO as GPIO
@@ -49,13 +50,14 @@ filenames_records = next(os.walk('records'), (None, None, []))[2]  # [] if no fi
 filenames_saved = next(os.walk('records/saved'), (None, None, []))[2]  # [] if no file
 # ask and delete
 if len(filenames_records) > 0 or len(filenames_saved) > 0:
-    delete_files = input("Voulez-vous supprimer les fichiers existants ? (Y/N)")
-    delete_files = str(delete_files)
+#    delete_files = input("Voulez-vous supprimer les fichiers existants ? (Y/N)")
+#    delete_files = str(delete_files)
+    delete_files = "Y"
     if delete_files == "Y":
-        print [s + 'records/ for s in filenames_records]
-        # os.remove('records/' + filenames_records)
-        # os.remove('records/saved' + filenames_saved)
-
+        for p in Path("records/").glob("*.h264"):
+            p.unlink()
+        for p in Path("records/saved/").glob("*.h264"):
+            p.unlink()
 
 while True:
     # detect movement
@@ -121,7 +123,7 @@ while True:
                 list_recorded_file.append(file_number)
 
             print 'file ' + copied_file + ' recorded'
-#        if file_number - 1 > 0 and file_number - 1 not in list_recorded_file:
-#             os.remove('records/recorded' + str(file_number - 1) + '.h264')
+        if file_number - 1 > 0 and file_number - 1 not in list_recorded_file:
+             os.remove('records/recorded' + str(file_number - 1) + '.h264')
     # else:
        #  print "go on because movement"

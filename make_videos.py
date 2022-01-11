@@ -82,7 +82,7 @@ while True:
             else:
                 save_multiple_files = False
                 print('save 1 file')
-                time_to_cut = round(time_before_movement - (motion_start_time - file_start_time), 2)
+                time_to_cut = round((motion_start_time - file_start_time) - time_before_movement, 2)
                 print('Movement starts at ' + str(time_to_cut) + ' seconds in the file')
 
         movement = True

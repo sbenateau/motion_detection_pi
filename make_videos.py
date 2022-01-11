@@ -66,7 +66,7 @@ while True:
     if i==0: #When output from motion sensor is LOW
         if movement == True:
             stop_time = time.time()
-            cut_end_file = file_start_time - stop_time
+            cut_end_file = stop_time - file_start_time
         movement = False
     else:
         if movement == False: # first movement detection

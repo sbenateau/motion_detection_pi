@@ -23,7 +23,7 @@ camera = picamera.PiCamera()
 camera.resolution = (1296, 972) # max fps is 42 at 1296x972
 camera.framerate = 15 # recomended are 12, 15, 24, 30
 camera.annotate_frame_num = True
-camera.annotate_text_size = int(round(camera.resolution[0]/64))
+camera.annotate_text_size = int(round(camera.resolution[0]/64/2))
 camera.annotate_background = picamera.Color('black') # text background  colour
 camera.annotate_foreground = picamera.Color('white') # text colour
 

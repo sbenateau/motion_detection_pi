@@ -94,7 +94,7 @@ while True:
     # buffer control
     if start_cam:
         file_number += 1
-        camera.start_recording('records/recorded' + str(file_number) + '.h264')
+        camera.start_recording('records/recorded' + time.ctime(file_number) + '.h264')
         previous_file_start_time = file_start_time
         file_start_time = time.time()
         print 'start_cam ' + str(file_number) + ' at ' + str(file_start_time)

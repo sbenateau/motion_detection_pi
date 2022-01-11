@@ -115,9 +115,9 @@ while True:
             # change to move
             file_to_copy = 'records/recorded' + str(file_number) + '.h264'
             if save_multiple_files:
-                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_nocut_start' + '_cut_stop_' + str(stop_time) + '.h264'
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_nocut_start' + '_cut_stop_' + str(cut_end_file) + '.h264'
             else:
-                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_start_' + str(time_to_cut) + '_cut_stop_' + str(stop_time) + '.h264'
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_start_' + str(time_to_cut) + '_cut_stop_' + str(cut_end_file) + '.h264'
             shutil.copyfile(file_to_copy, copied_file)
             list_recorded_file.append(file_number)
             record_file = False

@@ -64,6 +64,9 @@ while True:
     # detect movement
     i=GPIO.input(11)
     if i==0: #When output from motion sensor is LOW
+        if movement == True:
+            stop_time = time.time()
+            cut_end_file = file_start_time - stop_time
         movement = False
     else:
         if movement == False: # first movement detection
@@ -71,14 +74,14 @@ while True:
             movement_number += 1
             print('Movement detected at ' + time.ctime(motion_start_time))
             print('Last file recording at ' + time.ctime(file_start_time))
-            print('time difference = ' + str(file_start_time - motion_start_time))
+            print('time difference = ' + str(motion_start_time - file_start_time))
 
             if motion_start_time - file_start_time < time_before_movement:
                 print('save 2 files')
                 save_multiple_files = True
                 # much more complex compare to length of previous file
                 time_to_cut = round(file_start_time - previous_file_start_time - (time_before_movement - (motion_start_time - file_start_time)), 2)
-                print('Movement starts' + str(time_to_cut) + ' seconds before the end of the other file')
+                print('Movement starts ' + str(time_to_cut) + ' seconds before the end of the other file')
             else:
                 save_multiple_files = False
                 print('save 1 file')
@@ -112,15 +115,15 @@ while True:
             # change to move
             file_to_copy = 'records/recorded' + str(file_number) + '.h264'
             if save_multiple_files:
-                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_nocut' + '.h264'
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_nocut_start' + '_cut_stop_' + str(stop_time) + '.h264'
             else:
-                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_' + str(time_to_cut) + '.h264'
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number) + '_cut_start_' + str(time_to_cut) + '.h264'
             shutil.copyfile(file_to_copy, copied_file)
             list_recorded_file.append(file_number)
             record_file = False
             if save_multiple_files:
                 file_to_copy = 'records/recorded' + str(file_number - 1) + '.h264'
-                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number - 1) + '_cut_' + str(time_to_cut) + '.h264'
+                copied_file = 'records/saved/movement_' + str(movement_number) + '_buffer_' + str(file_number - 1) + '_cut_start_' + str(time_to_cut) + + '_cut_stop_' + str(stop_time) '.h264'
                 shutil.copyfile(file_to_copy, copied_file)
                 list_recorded_file.append(file_number)
 

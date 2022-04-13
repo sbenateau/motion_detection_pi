@@ -97,7 +97,7 @@ while True:
         camera.start_recording('records/recorded' + str(file_number) + '.h264')
         previous_file_start_time = file_start_time
         file_start_time = time.time()
-        print 'start_cam ' + str(file_number) + ' at ' + time.ctime(file_start_time)
+        print ('start_cam ' + str(file_number) + ' at ' + time.ctime(file_start_time))
         start_time = file_start_time
         start_cam = False
     elif timer > 0:

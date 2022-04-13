@@ -97,7 +97,7 @@ while True:
         camera.start_recording('records/recorded' + str(file_number) + '.h264')
         previous_file_start_time = file_start_time
         file_start_time = time.time()
-        print ('start_cam ' + str(file_number) + ' at ' + time.ctime(file_start_time))
+        print('start_cam ' + str(file_number) + ' at ' + time.ctime(file_start_time))
         start_time = file_start_time
         start_cam = False
     elif timer > 0:
@@ -108,10 +108,10 @@ while True:
     elif not movement:
         start_cam = True
         timer = video_duration
-        print 'write file'
+        print('write file')
         camera.stop_recording()
         if record_file:
-            print 'copy movement file'
+            print('copy movement file')
             # change to move
             file_to_copy = 'records/recorded' + str(file_number) + '.h264'
             if save_multiple_files:
@@ -127,7 +127,7 @@ while True:
                 shutil.copyfile(file_to_copy, copied_file)
                 list_recorded_file.append(file_number)
 
-            print 'file ' + copied_file + ' recorded'
+            print('file ' + copied_file + ' recorded')
         if file_number - 1 > 0 and file_number - 1:
             os.remove('records/recorded' + str(file_number - 1) + '.h264')
     # else:
